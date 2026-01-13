@@ -2,6 +2,8 @@ import graphqlClient from '@/lib/graphql-client';
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
+import { AddToCartButton } from '@/components/add-to-cart-button';
+import { ProductViewTracker } from '@/components/product-view-tracker';
 
 const GET_PRODUCT = `
     query getProduct($handle: String!)  {
@@ -95,6 +97,14 @@ export default async function ProductPage({
 
     return (
         <main className="mx-auto max-w-7xl px-6 lg:px-8 py-12 sm:py-24">
+            <ProductViewTracker
+                productId={product.id}
+                productTitle={product.title}
+                productHandle={product.handle}
+                price={parseFloat(minVariantPrice.amount)}
+                currency={minVariantPrice.currencyCode}
+                availableForSale={product.availableForSale}
+            />
             <div className="lg:grid lg:grid-cols-2 lg:gap-x-12 xl:gap-x-16">
                 {/* Image Gallery */}
                 <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-gray-100 dark:bg-slate-800">
@@ -134,17 +144,14 @@ export default async function ProductPage({
                     </div>
 
                     <div className="mt-10">
-                        <button
-                            type="button"
-                            disabled={!product.availableForSale}
-                            className={`flex w-full items-center justify-center rounded-lg px-8 py-4 text-base font-bold text-white shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 ${
-                                product.availableForSale
-                                    ? 'bg-primary hover:bg-primary-hover shadow-primary/25 hover:shadow-primary/40 hover:-translate-y-0.5 focus:ring-primary'
-                                    : 'cursor-not-allowed bg-slate-300 text-slate-500 dark:bg-slate-700 dark:text-slate-400 shadow-none'
-                            }`}
-                        >
-                            {product.availableForSale ? 'Add to Cart' : 'Out of Stock'}
-                        </button>
+                        <AddToCartButton
+                            productId={product.id}
+                            productTitle={product.title}
+                            productHandle={product.handle}
+                            price={parseFloat(minVariantPrice.amount)}
+                            currency={minVariantPrice.currencyCode}
+                            availableForSale={product.availableForSale}
+                        />
                     </div>
                     
                     <div className="mt-8 border-t border-slate-200 pt-8 dark:border-slate-800">

@@ -1,6 +1,5 @@
 import graphqlClient from '@/lib/graphql-client';
-import Link from 'next/link';
-import Image from 'next/image';
+import { CollectionCard } from '@/components/collection-card';
 
 const GET_COLLECTIONS = `
     query getCollections {
@@ -44,28 +43,15 @@ export default async function Shop() {
             <h1 className="text-4xl font-bold mb-8">Collections</h1>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {collections.map(({ node }: any) => (
-                    <Link
+                    <CollectionCard
                         key={node.id}
-                        href={`/collections/${node.handle}`}
-                        className="group block border p-4 rounded-lg hover:shadow-lg transition-shadow dark:border-slate-800"
-                    >
-                        <div className="aspect-square relative overflow-hidden rounded-md mb-4">
-                            {node.image ? (
-                                <Image
-                                    src={node.image.url}
-                                    alt={node.image.altText || node.title}
-                                    fill
-                                    loading="eager"
-                                    sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                                    className="object-cover group-hover:scale-105 transition-transform"
-                                />
-                            ) : (
-                                <div className="bg-gray-100 dark:bg-slate-800 w-full h-full flex items-center justify-center text-slate-500">No Image</div>
-                            )}
-                        </div>
-                        <h2 className="font-semibold text-lg text-slate-900 dark:text-white">{node.title}</h2>
-                        {node.description && <p className="text-sm text-slate-600 dark:text-slate-400 mt-1 line-clamp-2">{node.description}</p>}
-                    </Link>
+                        collectionId={node.id}
+                        collectionHandle={node.handle}
+                        collectionTitle={node.title}
+                        description={node.description}
+                        imageUrl={node.image?.url}
+                        imageAlt={node.image?.altText || node.title}
+                    />
                 ))}
             </div>
         </main>

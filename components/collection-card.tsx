@@ -1,0 +1,65 @@
+'use client'
+
+import Link from 'next/link'
+import Image from 'next/image'
+import posthog from 'posthog-js'
+
+interface CollectionCardProps {
+  collectionId: string;
+  collectionHandle: string;
+  collectionTitle: string;
+  description?: string;
+  imageUrl?: string;
+  imageAlt?: string;
+}
+
+export function CollectionCard({
+  collectionId,
+  collectionHandle,
+  collectionTitle,
+  description,
+  imageUrl,
+  imageAlt,
+}: CollectionCardProps) {
+  const handleCollectionClick = () => {
+    posthog.capture('collection_card_clicked', {
+      collection_id: collectionId,
+      collection_handle: collectionHandle,
+      collection_title: collectionTitle,
+      source_page: 'shop',
+    });
+  };
+
+  return (
+    <Link
+      href={`/collections/${collectionHandle}`}
+      onClick={handleCollectionClick}
+      className="group block border p-4 rounded-lg hover:shadow-lg transition-shadow dark:border-slate-800"
+    >
+      <div className="aspect-square relative overflow-hidden rounded-md mb-4">
+        {imageUrl ? (
+          <Image
+            src={imageUrl}
+            alt={imageAlt || collectionTitle}
+            fill
+            loading="eager"
+            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            className="object-cover group-hover:scale-105 transition-transform"
+          />
+        ) : (
+          <div className="bg-gray-100 dark:bg-slate-800 w-full h-full flex items-center justify-center text-slate-500">
+            No Image
+          </div>
+        )}
+      </div>
+      <h2 className="font-semibold text-lg text-slate-900 dark:text-white">
+        {collectionTitle}
+      </h2>
+      {description && (
+        <p className="text-sm text-slate-600 dark:text-slate-400 mt-1 line-clamp-2">
+          {description}
+        </p>
+      )}
+    </Link>
+  );
+}

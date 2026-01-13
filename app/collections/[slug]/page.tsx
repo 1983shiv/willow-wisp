@@ -1,7 +1,8 @@
 import graphqlClient from '@/lib/graphql-client';
-import Link from 'next/link';
-import Image from 'next/image';
 import { notFound } from 'next/navigation';
+import Link from 'next/link';
+import { CollectionViewTracker } from '@/components/collection-view-tracker';
+import { ProductCard } from '@/components/product-card';
 
 const GET_COLLECTION_PRODUCTS = `
     query getCollectionProducts($handle: String!)  {
@@ -88,6 +89,12 @@ export default async function Collections({
 
     return (
         <main className="max-w-7xl mx-auto p-10 ">
+            <CollectionViewTracker
+                collectionId={collection.id}
+                collectionTitle={collection.title}
+                collectionHandle={handle}
+                productCount={products.length}
+            />
             <div className="mb-12">
                 <h1 className="text-4xl font-bold mb-4">{collection.title}</h1>
                 {collection.description && (
@@ -99,37 +106,17 @@ export default async function Collections({
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {products.map(({ node }: any) => (
-                    <Link
+                    <ProductCard
                         key={node.id}
-                        href={`/product/${node.handle}`}
-                        className="group block border p-4 rounded-lg hover:shadow-lg transition-shadow dark:border-slate-800"
-                    >
-                        <div className="aspect-square relative overflow-hidden rounded-md mb-4">
-                            {node.featuredImage ? (
-                                <Image
-                                    src={node.featuredImage.url}
-                                    alt={
-                                        node.featuredImage.altText || node.title
-                                    }
-                                    fill
-                                    loading="eager"
-                                    sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                                    className="object-cover group-hover:scale-105 transition-transform"
-                                />
-                            ) : (
-                                <div className="bg-gray-100 dark:bg-slate-800 w-full h-full flex items-center justify-center text-slate-500">
-                                    No Image
-                                </div>
-                            )}
-                        </div>
-                        <h2 className="font-semibold text-lg text-slate-900 dark:text-white">
-                            {node.title}
-                        </h2>
-                        <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-                            {node.priceRange.minVariantPrice.amount}{' '}
-                            {node.priceRange.minVariantPrice.currencyCode}
-                        </p>
-                    </Link>
+                        productId={node.id}
+                        productHandle={node.handle}
+                        productTitle={node.title}
+                        price={parseFloat(node.priceRange.minVariantPrice.amount)}
+                        currency={node.priceRange.minVariantPrice.currencyCode}
+                        imageUrl={node.featuredImage?.url}
+                        imageAlt={node.featuredImage?.altText || node.title}
+                        collectionHandle={handle}
+                    />
                 ))}
             </div>
         </main>

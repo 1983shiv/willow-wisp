@@ -2,7 +2,16 @@
 
 import Image from "next/image"
 import Link from 'next/link'
+import posthog from 'posthog-js'
+
 export function HeroHome() {
+  const handleCtaClick = (ctaName: string, destination: string) => {
+    posthog.capture('cta_clicked', {
+      cta_name: ctaName,
+      cta_location: 'hero_section',
+      destination_url: destination,
+    });
+  };
   return (
     <section className="relative w-full overflow-hidden bg-texture">
       <div className="mx-auto grid min-h-[calc(100vh-80px)] max-w-7xl grid-cols-1 lg:grid-cols-2">
@@ -30,10 +39,10 @@ export function HeroHome() {
               Hand-picked treasures wrapped with artisan charm. Discover the perfect gift that tells a story.
             </p>
             <div className="flex gap-4 mt-4">
-              <Link href="/shop" className="flex h-12 items-center justify-center rounded-lg bg-primary px-8 text-base font-bold text-white shadow-lg shadow-primary/25 transition-all hover:translate-y-[-2px] hover:shadow-xl hover:shadow-primary/40">
+              <Link href="/shop" onClick={() => handleCtaClick('explore_gifts', '/shop')} className="flex h-12 items-center justify-center rounded-lg bg-primary px-8 text-base font-bold text-white shadow-lg shadow-primary/25 transition-all hover:translate-y-[-2px] hover:shadow-xl hover:shadow-primary/40">
                 Explore Gifts
               </Link>
-              <Link href="/bundles" className="flex h-12 items-center justify-center rounded-lg border border-slate-200 bg-white px-8 text-base font-bold text-slate-900 transition-all hover:border-primary/50 hover:bg-primary/5 dark:border-slate-700 dark:bg-slate-800 dark:text-white">
+              <Link href="/bundles" onClick={() => handleCtaClick('view_bundles', '/bundles')} className="flex h-12 items-center justify-center rounded-lg border border-slate-200 bg-white px-8 text-base font-bold text-slate-900 transition-all hover:border-primary/50 hover:bg-primary/5 dark:border-slate-700 dark:bg-slate-800 dark:text-white">
                 View Bundles
               </Link>
             </div>

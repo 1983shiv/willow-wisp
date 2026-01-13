@@ -1,36 +1,47 @@
+'use client'
+
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import posthog from 'posthog-js'
 
 const categories = [
   {
     name: 'For Dreamers',
-    href: '/shop/aromatherapy',
+    href: '/collectionss/aromatherapy',
     src: '/images/cozy-reading-nook-essentials-flat-lay-for-dreamers_3c431d9ed6.webp',
     alt: 'Cozy reading nook essentials flat lay for dreamers'
   },
   {
     name: 'For Makers',
-    href: '/shop/vases-pottery',
+    href: '/collections/vases-pottery',
     src: '/images/art-supplies-and-notebook-flat-lay-for-makers_a8b4983a0f.webp',
     alt: 'Art supplies and notebook flat lay for makers',
     icon: 'brush'
   },
   {
     name: 'For Hosts',
-    href: '/shop/all-botanical',
+    href: '/collections/all-botanical',
     src: '/images/kitchen-and-dining-accessories-flat-lay-for-hosts_77441eeff2.webp',
     alt: 'Kitchen and dining accessories flat lay for hosts'
   },
   {
     name: 'For Growers',
-    href: '/shop/wall-art',
+    href: '/collections/wall-art',
     src: '/images/plant-care-tools-and-pots-flat-lay-for-gardeners_cb9f5f7d0a.webp',
     alt: 'Plant care tools and pots flat lay for gardeners'
   }
 ]
 
 export function FeaturedCategories() {
+  const handleCategoryClick = (categoryName: string, categoryHref: string) => {
+    posthog.capture('category_clicked', {
+      category_name: categoryName,
+      category_url: categoryHref,
+      location: 'featured_categories',
+    });
+  };
+
   return (
     <section className="py-24 bg-white dark:bg-background-dark relative overflow-hidden">
       {/* Illustrative accent */}
@@ -46,7 +57,7 @@ export function FeaturedCategories() {
 
         <div className="flex flex-wrap justify-center gap-10 md:gap-16">
           {categories.map((category) => (
-            <Link key={category.name} href={category.href} className="group flex flex-col items-center gap-4">
+            <Link key={category.name} href={category.href} onClick={() => handleCategoryClick(category.name, category.href)} className="group flex flex-col items-center gap-4">
               <div className="relative size-40 overflow-hidden rounded-full border-4 border-transparent transition-all duration-300 group-hover:scale-105 group-hover:border-primary/30 md:size-48 shadow-xl shadow-slate-200 dark:shadow-none">
                 <Image 
                   src={category.src} 
