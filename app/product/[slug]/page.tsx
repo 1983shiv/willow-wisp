@@ -46,6 +46,16 @@ const GET_PRODUCT = `
     }
 `;
 
+/**
+ * Render the product detail page for the product identified by the route slug.
+ *
+ * Fetches product data by handle and renders product imagery, pricing, description,
+ * purchase controls, and a shipping notice. If the product cannot be found or a
+ * fetch error occurs, renders an appropriate "not found" or error UI.
+ *
+ * @param params - A promise that resolves to an object containing the route `slug`.
+ * @returns The React element for the product detail page or an error/not-found UI.
+ */
 export default async function ProductPage({
     params,
 }: {

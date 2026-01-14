@@ -21,6 +21,13 @@ const GET_COLLECTIONS = `
     }
 `;
 
+/**
+ * Renders the shop collections page by fetching collections from Shopify and displaying them in a responsive grid.
+ *
+ * If the fetch returns errors, renders an error message instead of the collections grid.
+ *
+ * @returns A React element for the collections page: a header and a responsive grid of CollectionCard components, or an error view when collections could not be loaded.
+ */
 export default async function Shop() {
     const { data, errors } = await getShopifyData<GetCollectionsData>(GET_COLLECTIONS, {}, ['collections']);
 
