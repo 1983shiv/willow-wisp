@@ -64,7 +64,7 @@ export default function Search(){
                             )}
                             <div>
                                 <p className="font-medium text-slate-500">{node.title}</p>
-                                <p className="font-sm text-slate-300">
+                                <p className="text-sm text-slate-300">
                                     {node.priceRange.minVariantPrice.amount}{node.priceRange.minVariantPrice.currencyCode}
                                 </p>
                             </div>
@@ -73,7 +73,7 @@ export default function Search(){
                     {/* No Results Found */}
                     {!isLoading && products.length === 0 && (
                         <div className="p-4 text-center text-primary">
-                            No Product found for ${debounceTerm}
+                            No Product found for {debounceTerm}
                         </div>
                     )}
                 </div>
