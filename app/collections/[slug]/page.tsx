@@ -1,13 +1,15 @@
-import graphqlClient from '@/lib/graphql-client';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import { getShopifyData } from '@/lib/shopifyData';
 import { CollectionViewTracker } from '@/components/collection-view-tracker';
 import { ProductCard } from '@/components/product-card';
+import { GetCollectionProductsData, ProductEdge } from '@/lib/shopifyTypes';
 
 const GET_COLLECTION_PRODUCTS = `
     query getCollectionProducts($handle: String!)  {
         collectionByHandle(handle: $handle) {
             id
+            handle
             title
             description
             image {
@@ -50,9 +52,9 @@ export default async function Collections({
 
     if (!handle) notFound();
 
-    const { data, errors, extensions } = await graphqlClient.request(
-        GET_COLLECTION_PRODUCTS,
-        { variables: { handle: handle } }
+    const { data, errors } = await getShopifyData<GetCollectionProductsData>(GET_COLLECTION_PRODUCTS,
+        { handle: handle },
+        [`products-${handle}`]
     );
 
     if (errors) {
@@ -105,7 +107,7 @@ export default async function Collections({
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {products.map(({ node }: any) => (
+                {products.map(({ node }: ProductEdge) => (
                     <ProductCard
                         key={node.id}
                         productId={node.id}

@@ -1,48 +1,33 @@
-'use client'
-
-import Link from 'next/link'
-import Image from 'next/image'
-import posthog from 'posthog-js'
+import Link from 'next/link';
+import Image from 'next/image';
 
 interface CollectionCardProps {
   collectionId: string;
   collectionHandle: string;
   collectionTitle: string;
-  description?: string;
+  description: string | null;
   imageUrl?: string;
-  imageAlt?: string;
+  imageAlt: string;
 }
 
 export function CollectionCard({
-  collectionId,
   collectionHandle,
   collectionTitle,
   description,
   imageUrl,
   imageAlt,
 }: CollectionCardProps) {
-  const handleCollectionClick = () => {
-    posthog.capture('collection_card_clicked', {
-      collection_id: collectionId,
-      collection_handle: collectionHandle,
-      collection_title: collectionTitle,
-      source_page: 'shop',
-    });
-  };
-
   return (
     <Link
       href={`/collections/${collectionHandle}`}
-      onClick={handleCollectionClick}
       className="group block border p-4 rounded-lg hover:shadow-lg transition-shadow dark:border-slate-800"
     >
       <div className="aspect-square relative overflow-hidden rounded-md mb-4">
         {imageUrl ? (
           <Image
             src={imageUrl}
-            alt={imageAlt || collectionTitle}
+            alt={imageAlt}
             fill
-            loading="eager"
             sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
             className="object-cover group-hover:scale-105 transition-transform"
           />
