@@ -1,9 +1,10 @@
-import graphqlClient from '@/lib/graphql-client';
+import { getShopifyData } from '@/lib/shopifyData';
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { AddToCartButton } from '@/components/add-to-cart-button';
 import { ProductViewTracker } from '@/components/product-view-tracker';
+import { GetProductData } from '@/lib/shopifyTypes';
 
 const GET_PRODUCT = `
     query getProduct($handle: String!)  {
@@ -58,10 +59,9 @@ export default async function ProductPage({
 
     if (!handle) notFound();
 
-    const { data, errors, extensions } = await graphqlClient.request(
-        GET_PRODUCT,
-        { variables: { handle: handle } }
-    );
+    const { data, errors } = await getShopifyData<GetProductData>(GET_PRODUCT,
+            { handle: handle },
+        ['products']);
 
     if (errors) {
         console.error(errors);

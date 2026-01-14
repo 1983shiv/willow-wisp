@@ -8,7 +8,7 @@ import posthog from 'posthog-js'
 const categories = [
   {
     name: 'For Dreamers',
-    href: '/collectionss/aromatherapy',
+    href: '/collections/aromatherapy',
     src: '/images/cozy-reading-nook-essentials-flat-lay-for-dreamers_3c431d9ed6.webp',
     alt: 'Cozy reading nook essentials flat lay for dreamers'
   },

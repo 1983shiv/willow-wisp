@@ -1,5 +1,6 @@
-import graphqlClient from '@/lib/graphql-client';
+import { getShopifyData } from '@/lib/shopifyData';
 import { CollectionCard } from '@/components/collection-card';
+import { GetCollectionsData, CollectionEdge } from '@/lib/shopifyTypes';
 
 const GET_COLLECTIONS = `
     query getCollections {
@@ -21,9 +22,7 @@ const GET_COLLECTIONS = `
 `;
 
 export default async function Shop() {
-    const { data, errors, extensions } = await graphqlClient.request(
-        GET_COLLECTIONS
-    );
+    const { data, errors } = await getShopifyData<GetCollectionsData>(GET_COLLECTIONS, {}, ['collections']);
 
     if (errors) {
         console.error(errors);
@@ -42,7 +41,7 @@ export default async function Shop() {
         <main className="max-w-7xl mx-auto p-10 ">
             <h1 className="text-4xl font-bold mb-8">Collections</h1>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {collections.map(({ node }: any) => (
+                {collections.map(({ node }: CollectionEdge) => (
                     <CollectionCard
                         key={node.id}
                         collectionId={node.id}
