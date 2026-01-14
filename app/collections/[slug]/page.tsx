@@ -39,6 +39,14 @@ const GET_COLLECTION_PRODUCTS = `
     }
 `;
 
+/**
+ * Renders the shop collection page for the requested collection handle.
+ *
+ * Fetches collection data by handle derived from the provided route params and returns the component tree that displays collection details and its products; if the collection is missing or a fetch error occurs, returns a user-facing "not found" or error UI.
+ *
+ * @param params - A promise that resolves to route parameters. `slug` may be a string or an array-like value derived from the route and is used to determine the collection handle.
+ * @returns The React element for the collection page (collection view with product grid, or an error/not-found UI).
+ */
 export default async function Collections({
     params,
 }: {

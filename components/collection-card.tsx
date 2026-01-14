@@ -10,6 +10,16 @@ interface CollectionCardProps {
   imageAlt: string;
 }
 
+/**
+ * Renders a link-styled card for a collection with an image, title, and optional description.
+ *
+ * @param collectionHandle - Collection handle used to build the card's href (navigates to /collections/{collectionHandle})
+ * @param collectionTitle - Visible title shown on the card
+ * @param description - Optional collection description; rendered when not null
+ * @param imageUrl - Optional image URL; when omitted a "No Image" placeholder is shown
+ * @param imageAlt - Alt text for the image element
+ * @returns The rendered collection card element
+ */
 export function CollectionCard({
   collectionHandle,
   collectionTitle,
