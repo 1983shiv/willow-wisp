@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
 
     // 2. Verify the request is actually from Shopify
     const hash = crypto
-      .createHmac('sha256', process.env.SHOPIFY_WEBHOOK_SECRET!)
+      .createHmac('sha256', process.env.NEXT_SHOPIFY_WEBHOOK_SECRET!)
       .update(rawBody, 'utf8')
       .digest('base64');
 
@@ -23,11 +23,11 @@ export async function POST(req: NextRequest) {
     // 3. Revalidate based on the topic
     // Map Shopify topics to your Next.js cache tags
     if (topic?.startsWith('products/')) {
-      revalidateTag('products', 'profile');
+      revalidateTag('products', 'max');
     } else if (topic?.startsWith('collections/')) {
-      revalidateTag('collections', 'profile');
+      revalidateTag('collections', 'max');
     } else if (topic?.startsWith('customers/')) {
-      revalidateTag('users', 'profile');
+      revalidateTag('users', 'max');
     }
 
     console.log(`Revalidated tags for topic: ${topic}`);

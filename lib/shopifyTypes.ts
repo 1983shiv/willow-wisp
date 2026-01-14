@@ -83,3 +83,7 @@ export interface GetCollectionProductsData {
 export interface GetProductData {
     productByHandle: Product | null;
 }
+
+export interface SearchProductsData {
+    products: ProductConnection;
+}

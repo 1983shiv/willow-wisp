@@ -2,7 +2,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 interface CollectionCardProps {
-  collectionId: string;
   collectionHandle: string;
   collectionTitle: string;
   description: string | null;
